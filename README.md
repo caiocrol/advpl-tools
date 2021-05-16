@@ -1,4 +1,6 @@
 # advpl-tools
-Ferramentas uteis em adpvl<br />
-TabProt<br />
-FunÁ„o advpl para consultas no dicion·rio de dados protheus
+Ferramentas uteis em adpvl
+* TabProt
+  * Fun√ß√£o advpl para consultas no dicion√°rio de dados protheus
+* ExecSQL
+  * Fun√ß√£o para conultas SQL
