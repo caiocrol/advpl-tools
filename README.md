@@ -1,9 +1,9 @@
 # advpl-tools
 Ferramentas uteis em adpvl
-* TabProt
+* <a href="https://github.com/caiocrol/advpl-tools/tree/main/TabProt">TabProt</a>
   * Função advpl para consultas no dicionário de dados protheus
-* ExecSQL
+* <a href="https://github.com/caiocrol/advpl-tools/tree/main/ExecSQL">ExecSQL</a>
   * Função para conultas SQL
-* VsCode
+* <a href="https://github.com/caiocrol/advpl-tools/tree/main/VSCode">VsCode</a>
   * Snippets: Templates uteis de codigos para advpl
   * Keybinds: Atalhos uteis para facilitar o uso
