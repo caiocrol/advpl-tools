@@ -3,7 +3,7 @@
 
 * Essa função sempre executa um select MAX para buscar o proximo registro
 evitando a perda de posições.
-* Permite passar parametros para desconsiderar ou considerar certos codigos, de formas que os 
+* Permite passar parametros para desconsiderar ou considerar certos codigos, de forma que os 
 codigos cadastrados errados não interferem para trazer o proximo registro
 * Caso 2 ou mais usuarios busquem o proximo numero a rotina consegue trazer de forma 
 correta pois nesse caso será utilizado um arquivo criado dinamicamente para buscar 
