@@ -655,8 +655,15 @@ Static Function fF9(_lFormTab)
 
 	Aadd(_aSubs, {"<", "&lt;"})
 	Aadd(_aSubs, {">", "&gt;"})
-	Aadd(_aSubs, {Chr(10),Chr(10)+"<br />"})
+	Aadd(_aSubs, {Chr(13),""})
+	Aadd(_aSubs, {" ","&nbsp;"})
+	Aadd(_aSubs, {Chr(10),"<br />"})
+	Aadd(_aSubs, {Chr(9),"&nbsp;&nbsp;&nbsp;&nbsp;"})
 
+	//_cTxt := Upper(oSelect:RetText())
+	//_cTxt := StrTran(_cTxt, " ","&nbsp;")
+	//oSelect:Load(_cTxt)
+	
 	oSelect:TextFormat(2) // formata como texto
 
 	_cTxt := Upper(oSelect:RetText())
@@ -672,6 +679,7 @@ Static Function fF9(_lFormTab)
 	For _na:= 1 to Len(_aSubs)
 		_cTxt := StrTran(_cTxt, _aSubs[_na,1], _aSubs[_na,2])
 	Next
+	//_cTxt := "<pre>" + _cTxt + "</pre>"
 	// tab
 	//_cTxt := StrTran(_cTxt,"	", "&#9;")
 	//_cTxt := StrTran(_cTxt,"    ", "&#9;")
