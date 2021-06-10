@@ -260,7 +260,7 @@ Static Function fConect()
 	EndIf
 
 	DEFINE MSDIALOG oDlg FROM 000,000 TO 170,316 PIXEL TITLE "Connect as..." OF oMainWnd STYLE DS_MODALFRAME
-
+	
 	@ 003,005 SAY "Server" SIZE 060,007 OF oDlg PIXEL
 
 	@ 012,005 GET oServer VAR _cServer PICTURE "@!" SIZE 150,009 PIXEL
@@ -655,10 +655,7 @@ Static Function fF9(_lFormTab)
 
 	Aadd(_aSubs, {"<", "&lt;"})
 	Aadd(_aSubs, {">", "&gt;"})
-	Aadd(_aSubs, {Chr(13),""})
-	Aadd(_aSubs, {" ","&nbsp;"})
-	Aadd(_aSubs, {Chr(10),"<br />"})
-	Aadd(_aSubs, {Chr(9),"&nbsp;&nbsp;&nbsp;&nbsp;"})
+	Aadd(_aSubs, {Chr(10),Chr(10)+"<br />"})
 
 	//_cTxt := Upper(oSelect:RetText())
 	//_cTxt := StrTran(_cTxt, " ","&nbsp;")
@@ -964,16 +961,21 @@ funcao que executa o sql update, insert ....
 Static Function fTcSqlExec()
 	Local _cSQL := ""
 	Local _cAviso := "Confirma a execução do sql (digite abaixo)? essa opção executa insert, update, delete, qualquer coisa, por sua conta em risco"
+	
+	Private nStatus := 0
 
 	If U_Aviso(_cAviso, @_cSQL, {"Confirmar", "Cancelar"}, .T.) == 1
-		Alert(_cSQL)
-
-		nStatus := TCSqlExec(_cSQL)
+		MsgAlert(_cSQL)
+		_cHrIni := Time()
+		FWMsgRun( /* Obj_tela */ , {|oSay| nStatus := TCSqlExec(_cSQL) } , "Executando query, aguarde..." , _cSQL )
+		_cHrFim := Time()
 
 		if (nStatus < 0)
 			MsgAlert("TCSQLError() " + TCSQLError())
 		Else
-			MsgInfo("Comando sql executado com sucesso, retorno: " + cValToChar(nStatus))
+			MsgInfo("Comando sql executado com sucesso, retorno: " + cValToChar(nStatus) + CRLF + ;
+				_cSQL + CRLF + ;
+				"Tempo decorrido: " + ElapTime(_cHrIni,_cHrFim) )
 		endif
 
 	EndIf
