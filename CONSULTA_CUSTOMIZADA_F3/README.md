@@ -1,7 +1,7 @@
 # Consultas F3 customizada
 
 * CONSFILE
-   * Fonte pra criar uma consulta F3 customizada a partir de um select ou a partir de um arquivo DTC
+   * Fonte pra criar uma consulta F3 customizada a partir de um select ou a partir de um tabela (SX ou Top)
 Esse fonte utiliza um arquivo txt que deve ser colocado na protheus_data do servidor, utiliza as configurações do txt para apresentar a tela.
 
 * ConsArq
