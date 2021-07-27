@@ -9,3 +9,5 @@ Ferramentas uteis em adpvl
 * <a href="https://github.com/caiocrol/advpl-tools/tree/main/VSCode">VsCode</a>
   * Snippets: Templates uteis de codigos para advpl
   * Keybinds: Atalhos uteis para facilitar o uso
+* <a href="https://github.com/caiocrol/advpl-tools/tree/main/CONSULTA_CUSTOMIZADA_F3">Consulta customizada F3</a>
+  * Consultas especificas genericas.
