@@ -14,7 +14,7 @@ U_CONSFILE("\consulta\consulta_produto.txt")<br />
 Retorno:<br />
 U_RETCONSF()<br />
 
-EXEMPLO DE UM ARQUIVO TXT COM AS CONFIGURACOES NECESSARIAS
+Exemplo de um arquivo txt com as configurações necessárias
 
 ```
 --INICIO_PARAM
