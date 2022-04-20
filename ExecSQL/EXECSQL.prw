@@ -65,7 +65,7 @@ User Function EXECSQL()
 	Private _cAlias := "ARQ_TRB_ZZZ" //GetNextAlias()
 	Private oTab
 	Private _oNReg
-	
+
 	Private oChkGrid
 	Private _lChk := .F.
 	Private _lTransp := .F.
@@ -260,7 +260,7 @@ Static Function fConect()
 	EndIf
 
 	DEFINE MSDIALOG oDlg FROM 000,000 TO 170,316 PIXEL TITLE "Connect as..." OF oMainWnd STYLE DS_MODALFRAME
-	
+
 	@ 003,005 SAY "Server" SIZE 060,007 OF oDlg PIXEL
 
 	@ 012,005 GET oServer VAR _cServer PICTURE "@!" SIZE 150,009 PIXEL
@@ -543,7 +543,7 @@ Static Function fMainFun()
 	oBCarrAll:Disable()
 
 	@ _aObj[4,1] - 8, 095 CheckBox oChkGrid Var _lChk Prompt "Mostrar Grid (CTRL + R)" Message "Mostrar Grid (CTRL + R) " Size 70, 007 ;
-	Pixel Of oMainWnd on Click (fShowGrid(@_lChk))
+		Pixel Of oMainWnd on Click (fShowGrid(@_lChk))
 	//@ _aObj[4,1] - 8, 170 CheckBox oChkTransp Var _lTransp Prompt "Transpor resultado" Message "Transpor resultado" Size 70, 007 ;
 	//Pixel Of oMainWnd
 
@@ -563,7 +563,7 @@ Static Function fMainFun()
 	DEFINE MSGITEM oMsgVer	OF oMainWnd:oMsgBar PROMPT GetVersao()	SIZE 200
 	DEFINE MSGITEM oMsgRec	OF oMainWnd:oMsgBar PROMPT _cNReg	SIZE 200
 	DEFINE MSGITEM oMsgSts	OF oMainWnd:oMsgBar PROMPT GetEnvServer() SIZE 100 */
-	
+
 
 	//DEFINE MSGITEM oMsgRdd	OF oMainWnd:oMsgBar PROMPT '2' 		SIZE 170
 	//DEFINE MSGITEM oMsgItem	OF oMainWnd:oMsgBar PROMPT "teste" SIZE 080
@@ -585,7 +585,7 @@ Return
 /*/
 Static Function fShowGrid(_lChk, _lAtualiza)
 	Default _lAtualiza := .F.
-	
+
 	If _lAtualiza
 		_lChk := !_lChk
 	EndIf
@@ -616,7 +616,7 @@ Static Function fCarrMore(_lAll)
 	_cTmIni := Time()
 	FWMsgRun( /* Obj_tela */ , {|oSay| aGridRes := fVarrAlias(,,.T., _lAll, aGridRes) } ,  "Aguarde" , "Listando registros"  )
 	_cNReg := Transform(Len(aGridRes) , "@E 999,999,999,999") + " registros. " + ElapTime( _cTmIni , Time() ) + " tempo decorrido."
-	
+
 	oGridRes:Refresh()
 
 Return
@@ -660,7 +660,7 @@ Static Function fF9(_lFormTab)
 	//_cTxt := Upper(oSelect:RetText())
 	//_cTxt := StrTran(_cTxt, " ","&nbsp;")
 	//oSelect:Load(_cTxt)
-	
+
 	oSelect:TextFormat(2) // formata como texto
 
 	_cTxt := Upper(oSelect:RetText())
@@ -961,7 +961,7 @@ funcao que executa o sql update, insert ....
 Static Function fTcSqlExec()
 	Local _cSQL := ""
 	Local _cAviso := "Confirma a execução do sql (digite abaixo)? essa opção executa insert, update, delete, qualquer coisa, por sua conta em risco"
-	
+
 	Private nStatus := 0
 
 	If U_Aviso(_cAviso, @_cSQL, {"Confirmar", "Cancelar"}, .T.) == 1
@@ -1805,6 +1805,10 @@ User Function fAltF1()
 		U_Aviso( "Erro", _cError ,{"OK"} )
 		//Alert( _cError)
 	End Sequence
+
+	// Restaura o code block de tratamento de erro original
+	ErrorBlock( bErrorBlock )
+
 Return nil
 
 
@@ -1943,6 +1947,9 @@ User Function fExecSql(oSay, lFim)
 		//MsgAlert(_cError)
 
 	End Sequence
+
+	// Restaura o code block de tratamento de erro original
+	ErrorBlock( bErrorBlock )
 
 Return nil
 
@@ -2111,6 +2118,9 @@ Static Function fImpCSV()
 
 	End Sequence
 
+	// Restaura o code block de tratamento de erro original
+	ErrorBlock( bErrorBlock )
+
 Return
 
 
@@ -2121,12 +2131,12 @@ Return
 // a ser utilizada como a estrutura da tabela a ser criada
 //ßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßß
 Static Function LeArq(_cArquivo , _lHead, _cSeparador)
-	/*/
+
 	Local oError
 	Local bError         := { |e| oError := e , Break(e) }
 	Local bErrorBlock
 	Local _cError := ""
-	/*/
+
 	Local _aLinhas := {}
 	Local _aLinha := {}
 	Local _aCol := {}
@@ -2139,91 +2149,92 @@ Static Function LeArq(_cArquivo , _lHead, _cSeparador)
 	EndIf
 	//Alert(_cSeparador)
 
-	/*/
 	If ValType(oError) = "O"
-	oError:FreeChildren()
-	FreeObj(oError)
+		oError:FreeChildren()
+		FreeObj(oError)
 	EndIf
 
 	bErrorBlock    := ErrorBlock( bError )
 
 	Begin Sequence
-	/*/
-	// Abre o arquivo
-	nHandle := FT_FUse(_cArquivo)
+		// Abre o arquivo
+		nHandle := FT_FUse(_cArquivo)
 
-	// Se houver erro de abertura abandona processamento
-	if nHandle = -1
-		Alert("Não foi possivel abrir o arquivo " + _cArquivo)
-		return
-	endif
-	// Posiciona na primeria linha
-	FT_FGoTop()
+		// Se houver erro de abertura abandona processamento
+		if nHandle = -1
+			Alert("Não foi possivel abrir o arquivo " + _cArquivo)
+			return
+		endif
+		// Posiciona na primeria linha
+		FT_FGoTop()
 
-	If _lHead
-		cLine  := FT_FReadLn()
-
-		//_aLinha := StrTokArr2(cLine , _cSeparador , .T. )
-		_aLinha := &("{'" + StrTran(cLine , _cSeparador , "','" ) + "'}")
-
-		_nz := 0
-
-		// para definicao do cabecalho existe duas opcoes
-		// opc 1 - nome das colunas separadas por ponto e virgula (;)
-		//  ex.: ACY_CODIGO;ACY_DESCRICAO;...
-
-		// opc 2 - nome das colunas separadas por ponto e virgula (;) e virgula (,) com informacao de tipo e tamanho
-		//  ex.: ACY_CODIGO,C,6,0;ACY_DESCRICAO,C,40,0;...
-		// nome,tipo,tamanho,decimal;...
-
-		// caso a linha possua apenas o nome sera importado como um campo caractere de 50 posicoes.
-
-		For _nz := 1 to Len(_aLinha)
-			If "," $ _aLinha[_nz]
-				_aCol := StrTokArr2( _aLinha[_nz] , "," , .T. )
-				_aCol := "{'" + StrTran( _aLinha[_nz] , "," , "','" ) + "'}"
-
-				AAdd(_aLinhas ,  { _aCol[1], _aCol[2] , _aCol[3] , _aCol[4] } )
-			Else
-				AAdd(_aLinhas ,  {_aLinha[_nz], "C" , 50 , 0 } )
-			EndIf
-		next
-
-		// Pula para próxima linha
-		FT_FSKIP()
-	Else
-		// Pula para próxima linha
-		FT_FSKIP()
-		While !FT_FEOF()
+		If _lHead
 			cLine  := FT_FReadLn()
 
-			//_aLinha := StrTokArr2(cLine , _cSeparador , .T.)
-			cLine := StrTran(cLine,"'","9878987")
+			//_aLinha := StrTokArr2(cLine , _cSeparador , .T. )
 			_aLinha := &("{'" + StrTran(cLine , _cSeparador , "','" ) + "'}")
 
-			For _na:= 1 to Len(_aLinha)
-				_aLinha[_na] := StrTran(_aLinha[_na],"9878987","'")
-			Next
+			_nz := 0
 
-			Aadd(_aLinhas, _aLinha )
+			// para definicao do cabecalho existe duas opcoes
+			// opc 1 - nome das colunas separadas por ponto e virgula (;)
+			//  ex.: ACY_CODIGO;ACY_DESCRICAO;...
+
+			// opc 2 - nome das colunas separadas por ponto e virgula (;) e virgula (,) com informacao de tipo e tamanho
+			//  ex.: ACY_CODIGO,C,6,0;ACY_DESCRICAO,C,40,0;...
+			// nome,tipo,tamanho,decimal;...
+
+			// caso a linha possua apenas o nome sera importado como um campo caractere de 50 posicoes.
+
+			For _nz := 1 to Len(_aLinha)
+				If "," $ _aLinha[_nz]
+					_aCol := StrTokArr2( _aLinha[_nz] , "," , .T. )
+					_aCol := "{'" + StrTran( _aLinha[_nz] , "," , "','" ) + "'}"
+
+					AAdd(_aLinhas ,  { _aCol[1], _aCol[2] , _aCol[3] , _aCol[4] } )
+				Else
+					AAdd(_aLinhas ,  {_aLinha[_nz], "C" , 50 , 0 } )
+				EndIf
+			next
+
 			// Pula para próxima linha
 			FT_FSKIP()
-		EndDo
-	EndIf
-	// Fecha o Arquivo
-	FT_FUSE()
-	/*/
+		Else
+			// Pula para próxima linha
+			FT_FSKIP()
+			While !FT_FEOF()
+				cLine  := FT_FReadLn()
+
+				//_aLinha := StrTokArr2(cLine , _cSeparador , .T.)
+				cLine := StrTran(cLine,"'","9878987")
+				_aLinha := &("{'" + StrTran(cLine , _cSeparador , "','" ) + "'}")
+
+				For _na:= 1 to Len(_aLinha)
+					_aLinha[_na] := StrTran(_aLinha[_na],"9878987","'")
+				Next
+
+				Aadd(_aLinhas, _aLinha )
+				// Pula para próxima linha
+				FT_FSKIP()
+			EndDo
+		EndIf
+		// Fecha o Arquivo
+		FT_FUSE()
+
 	Recover
-	//_cError := oError:Description
-	_cError := SubStr(oError:Description, RAt("Error :" , oError:Description ) , Len(oError:Description) ) // + CRLF + CRLF
-	//_cError += oError:ErrorStack
+		//_cError := oError:Description
+		_cError := SubStr(oError:Description, RAt("Error :" , oError:Description ) , Len(oError:Description) ) // + CRLF + CRLF
+		//_cError += oError:ErrorStack
 
-	//cSelect1 := VarInfo("Prop" , oError)
+		//cSelect1 := VarInfo("Prop" , oError)
 
-	Aviso( "Erro", _cError ,{"OK"} , 3 )
+		Aviso( "Erro", _cError ,{"OK"} , 3 )
 
 	End Sequence
-	/*/
+	
+	// Restaura o code block de tratamento de erro original
+	ErrorBlock( bErrorBlock )
+
 Return(_aLinhas)
 
 
@@ -2393,10 +2404,10 @@ Static Function fGridRes(lFim)
 
 			For _nx := 1 To Len(_aStruct)
 				oGridRes:AddColumn(TCColumn():New(_aStruct[_nx,01]	, &('{ || aGridRes[oGridRes:nAt,'+cValToChar(_nx)+'] }'),,,,;
-				"LEFT"/*,,.F.,.F.,,,,.F.,*/))
+					"LEFT"/*,,.F.,.F.,,,,.F.,*/))
 			Next
 		Else
-			
+
 		EndIf
 
 		oGridRes:Align := CONTROL_ALIGN_ALLCLIENT
@@ -2591,7 +2602,7 @@ User FUNCTION Aviso(cCaption,cMensagem,aBotoes,_lHabDigt)
 	Local _aBtn := {}
 
 	Default _lHabDigt := .F.
-	
+
 	Private oDlgAviso
 	Private nOpcAviso := 0
 
@@ -2606,19 +2617,19 @@ User FUNCTION Aviso(cCaption,cMensagem,aBotoes,_lHabDigt)
 	_aCoor[6] := _nSize // altura da janela
 	_aCoor[3] := _aCoor[5] / 2
 	_aCoor[4] := _aCoor[6] / 2
-	
+
 	_a1 := {_aCoor[1],_aCoor[2],_aCoor[3],_aCoor[4],3,3}
 	_a2 := {{200,200,.T.,.T.,.T.}, {37,18,.F.,.F.,.T.}}
 	_aObj := MsObjSize(_a1 , _a2 , .T. , .F. ) // ultimo par: .T. -> Horizontal, .F.-> vertical
 
 	DEFINE MSDIALOG oDlgAviso FROM 0,0 TO _aCoor[6],_aCoor[5] TITLE cCaption Of oMainWnd PIXEL
-	
+
 	If _lHabDigt
 		@ _aObj[1,1],_aObj[1,2] GET oGet VAR cMensagem Of oDlgAviso PIXEL SIZE _aObj[1,3],_aObj[1,4] MEMO FONT _oFCons16
 	Else
 		@ _aObj[1,1],_aObj[1,2] GET oGet VAR cMensagem Of oDlgAviso PIXEL SIZE _aObj[1,3],_aObj[1,4] READONLY MEMO FONT _oFCons16
 	EndIf
-	
+
 	If Len(aBotoes) > 1
 		TButton():New(1000,1000," ",oDlgAviso,{||Nil},32,10,,_oFCons16,.F.,.T.,.F.,,.F.,,,.F.)
 	EndIf
