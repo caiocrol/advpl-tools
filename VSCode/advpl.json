@@ -25,11 +25,12 @@
 	},
 	"Static_User_Function": {
 		"prefix": ["Static","User","Function","Pdoc"],
-		"body": ["/*/{Protheus.doc} ${1:funcao}",
+		"body": ["//-------------------------------------------------------------------",
+			"/*/{Protheus.doc} ${1:funcao}",
 			"${2:descricao}",
-			"@author Caio.Lima",
+			"@author Caio Lima",
 			"@since $CURRENT_DATE/$CURRENT_MONTH/$CURRENT_YEAR",
-			"/*/",
+			"//-----------------------------------------------------------------*/",
 			"${3|Static,User|} Function ${1:funcao}()",
 			"\t$0",
 			"Return",
@@ -177,6 +178,13 @@
 			],
 		"description": "cl_ gera log com num da linha"
 	},
+	"ConOut_proc": {
+		"prefix": ["ProcLine","ConOut","ProcName"],
+		"body": [
+			"ConOut(${1:\"===============================\"}+ProcName() + \" - \" + cValToChar(ProcLine()))"
+			],
+		"description": "cl_ gera log com num da linha"
+	},
 	"Aviso_varinfo 2": {
 		"prefix": ["Aviso", "Varinfo"],
 		"body": [
@@ -186,8 +194,31 @@
 		"description": "cl_ aviso varinfo multi"
 	},
 	"caio_doc": {
-		"prefix": ["caio","doc","pdoc"],
+		"prefix": ["caio","doc","pdoc","caio_doc"],
 		"body": ["/*Caio.Lima - $CURRENT_DATE/$CURRENT_MONTH/$CURRENT_YEAR - $0*/"],
 		"description": "Static ou User function padrao"
+	},
+	"Pdoc_caio": {
+		"prefix": ["Pdoc","doc","caio_doc"],
+		"body": ["//-------------------------------------------------------------------",
+			"/*/{Protheus.doc} ${1:funcao}",
+			"${2:descricao}",
+			"@author Caio Lima",
+			"@since $CURRENT_DATE/$CURRENT_MONTH/$CURRENT_YEAR",
+			"//-----------------------------------------------------------------*/",
+			],
+		"description": "Pdoc padrao, cabecalho de funcao"
+	},
+	"varinfo": {
+		"prefix": ["VarInfo"],
+		"body": ["VarInfo('${1:variavel}', ${1:variavel} , , .F. )$0"],
+		"description": "Insert varinfo"
+	},
+	"Proc_TestCase": {
+		"prefix": ["testcase","bproc","processo"],
+		"body": ["Local bProc as codeBlock ",
+				"bProc := {|| ProcName(1) + \" - \" + ProcSource(1) + \" - \" + cValToChar(ProcLine(1)) }",
+				"Eval(bProc)"],
+		"description": "Insert bProc for testcases"
 	}
 }
