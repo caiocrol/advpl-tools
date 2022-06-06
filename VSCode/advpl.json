@@ -164,6 +164,15 @@
 			],
 		"description": "cl_ usearea restarea auto"
 	},
+	"integridade3": {
+		"prefix": ["Integridade3", "restarea3","FwGetArea","FwRestArea"],
+		"body": [
+			"Local aArea${1:Tabela} as array",
+			"aArea${1:Tabela} := ${1:Tabela}->(FwGetArea())",
+			"FwRestArea(aArea${1:Tabela})"
+			],
+		"description": "cl_ usearea restarea auto"
+	},
 	"AutoGrLog": {
 		"prefix": ["AutoGrLog","gera log"],
 		"body": [

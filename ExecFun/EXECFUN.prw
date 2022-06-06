@@ -10,17 +10,20 @@ User Function EXECFUN()
 
 	Local cDigit := MemoRead("\system\"+procname()+".txt")
 	Local cSelec := ""
+	Local nOpc := 0
 
-	While sAviso("Digite a função a executar", @cDigit, {"Executar", "Cancelar"}, .T., @cSelec) == 1
+	While (nOpc := sAviso("Digite a função a executar", @cDigit, {"Executar", "Cancelar","Finalizar"}, .T., @cSelec)) == 1
 		If Empty(cSelec)
 			MsgAlert("Favor selecionar qual parte do texto deseja macro executar.")
 		Else
 			macroExec(cSelec, cDigit)
-			cvar := xxvar
 		EndIf
 	End
-
 	MemoWrite("\system\"+procname()+".txt" , cDigit)
+
+	If nOpc == 3
+		Final("Finalizado")
+	EndIf
 Return
 
 //-------------------------------------------------------------------
@@ -100,7 +103,7 @@ User Function FXBIGFOR()
 Return
 
 /*/{Protheus.doc} FEXECFOR
-	executa a formula
+executa a formula
 @author Caio.Lima
 @since 28/10/2020
 /*/
@@ -216,18 +219,28 @@ Return (nOpcAviso)
 @author Caio.Lima
 @since 05/04/2022
 /*/
-User Function XSIGAESP()
+Function U_XSIGAESP()
     Local cModulo 	:= 'SIGAESP' //Nome do Módulo que irá fazer a abertura do Smartclient
 
     MsApp():New(cModulo) //Instancia a aplicação no módulo
     oApp:cInternet := NIL     
     oApp:CreateEnv() //Cria o ambiente que será usando
-    PtSetTheme("OCEAN") //Define o nome do tema, se não inserir, será considerado o tema padrão
     oApp:cStartProg    	:= 'U_EXECFUN' //Instancia a função que será executada após a abertura do programa
     oApp:lMessageBar	:= .T. 
     oApp:cModDesc		:= cModulo
     __lInternet 		:= .T.
     lMsFinalAuto 		:= .F.
     oApp:lMessageBar	:= .T. 
-    oApp:Activate() //Executa
+    oApp:Activate(/* {|| U_EXECFUN() } */) //Executa
+Return
+
+//-------------------------------------------------------------------
+/*/{Protheus.doc} AFTERLOGIN
+	Ponto de entrada depois do login
+	habilita atalho para F12 chamar execfun
+@author Caio Lima
+@since 06/06/2022
+//-----------------------------------------------------------------*/
+User Function AFTERLOGIN()
+	SetKey(VK_F12, {|| U_EXECFUN() })
 Return
