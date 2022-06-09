@@ -205,6 +205,7 @@ Static FUNCTION sAviso(cCaption,cMensagem,aBotoes,_lHabDigt, cSelec)
 		EndIf
 		ny += _nLarg + 3
 	Next nx
+	oGet:SetFocus()
 
 	ACTIVATE MSDIALOG oDlgAviso CENTERED
 

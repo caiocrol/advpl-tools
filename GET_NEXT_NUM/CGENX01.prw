@@ -115,6 +115,7 @@ Static function fGetNext(_cTab, _cCampo, _cInc, _cExc, _lCompartilhado, _nLen)
 	Local _cRet := ""
 	Local _cSql := ""
 	Local _nQtdChar := 0
+	Local _nQtdInc := 0
 
 	If _nLen > 0
 		_nTamSX3 := _nLen
@@ -141,9 +142,9 @@ Static function fGetNext(_cTab, _cCampo, _cInc, _cExc, _lCompartilhado, _nLen)
 	EndIf
 	
 	If !Empty(_cInc)
-		_nQtdChar := Len(_cInc)
-		_cSql += " AND LEFT(" + _cCampo + ","+cValToChar(_nQtdChar)+") "
-		_cSql += " IN ('"+StrTran(_cInc, ",", "','")+"') "
+		_nQtdInc := Len(_cInc)
+		_cSql += " AND LEFT(" + _cCampo + ","+cValToChar(_nQtdInc)+") "
+		_cSql += " IN ('"+ _cInc +"') "
 	EndIf
 
 	If !Empty(_cExc)
@@ -171,7 +172,8 @@ Static function fGetNext(_cTab, _cCampo, _cInc, _cExc, _lCompartilhado, _nLen)
 	
 	If !(_cAlias)->(Eof())
 		If !Empty((_cAlias)->RETORNO)
-			_cRet := Soma1( Padr((_cAlias)->RETORNO, _nTamSX3, "0") )
+			_cRet := RIGHT( (_cAlias)->RETORNO, _nTamSX3 - _nQtdInc )
+			_cRet := _cInc + Soma1( _cRet )
 		Else
 			If !Empty(_cInc)
 				_cRet := Soma1(Padr(_cInc, _nTamSX3, "0"))
