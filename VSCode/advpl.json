@@ -229,5 +229,34 @@
 				"bProc := {|| ProcName(1) + \" - \" + ProcSource(1) + \" - \" + cValToChar(ProcLine(1)) }",
 				"Eval(bProc)"],
 		"description": "Insert bProc for testcases"
+	},
+	"beginSql": {
+		"prefix": ["beginSql"],
+		"body": [
+			"Local _cAlias := GetNextAlias() ",
+			"",
+			"BeginSql Alias _cAlias ",
+			"\tSELECT R_E_C_N_O_ REC${1:TAB}  ",
+			"\tFROM %Table:${1:TAB}% ${1:TAB} ",
+			"\tWHERE ${1:TAB}.%notDel% ",
+			"\tAND$0",
+			"EndSql ",
+			"",
+			"dbSelectArea(_cAlias) ",
+			"(_cAlias)->(dbGoTop()) ",
+			"",
+			"While !(_cAlias)->(Eof()) ",
+			"",
+			"\t(_cAlias)->(dbSkip()) ",
+			"End"
+			],
+		"description": "Insere beginsql completo"
+	},
+	"cAlias": {
+		"prefix": ["alias","calias","_calias"],
+		"body": [
+			"(_cAlias)->$0"
+			],
+		"description": "Insere calias padrao"
 	}
 }
