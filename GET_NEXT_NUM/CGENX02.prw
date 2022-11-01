@@ -125,7 +125,7 @@ Static function fGetNext(_cTab, _cCampo, _cInc, _cExc, _lCompartilhado, _nLen)
 	
 	If !(_cAlias)->(Eof())
 		If !Empty((_cAlias)->RETORNO)
-			_cRet := RIGHT( (_cAlias)->RETORNO, _nTamSX3 - _nQtdInc )
+			_cRet := RIGHT( AllTrim((_cAlias)->RETORNO), _nTamSX3 - _nQtdInc )
 			_cRet := _cInc + Soma1( _cRet )
 		Else
 			If !Empty(_cInc)
